@@ -23,5 +23,7 @@ public class Main {
         area = width * height;
 
         System.out.println("Area of the rectangle: " + area + " cm²");
+
+        scanner.close();
     }
 }
