@@ -7,7 +7,7 @@ public class Main {
         printReceipt(args);
     }
 
-    public static void printReceipt(String[] args){
+    static void printReceipt(String[] args){
         String itemName;
         double itemQuantity;
         double itemPrice;
