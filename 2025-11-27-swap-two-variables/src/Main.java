@@ -28,3 +28,4 @@ public class Main {
         System.out.println("a = " + a + ", b = " + b);
     }
 }
+//    Explanation: We save a in a temporary variable, move b into a, and then move the saved value into b.
