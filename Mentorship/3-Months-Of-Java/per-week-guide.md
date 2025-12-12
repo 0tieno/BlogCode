@@ -155,3 +155,4 @@
 - Connect APIs to databases (H2/Postgres)
 - Build a basic full-stack web application with authentication
 - Use Git/GitHub for version control and project management
+- Apply for Junior Backend Roles
