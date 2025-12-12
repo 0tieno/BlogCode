@@ -9,3 +9,5 @@ public class Main {
 
     }
 }
+
+//You can use Math.sqrt() to find the square root of a number:
