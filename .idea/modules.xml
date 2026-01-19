@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/2025-11-10 - the anatomy of java/2025-11-10 - the anatomy of java.iml" filepath="$PROJECT_DIR$/2025-11-10 - the anatomy of java/2025-11-10 - the anatomy of java.iml" />
+      <module fileurl="file://$PROJECT_DIR$/2025-11-13 - user input/2025-11-13 - user input.iml" filepath="$PROJECT_DIR$/2025-11-13 - user input/2025-11-13 - user input.iml" />
+      <module fileurl="file://$PROJECT_DIR$/2025-11-14-madlibs-game/2025-11-14-madlibs-game.iml" filepath="$PROJECT_DIR$/2025-11-14-madlibs-game/2025-11-14-madlibs-game.iml" />
+      <module fileurl="file://$PROJECT_DIR$/2025-11-14-shopping-cart/2025-11-14-shopping-cart.iml" filepath="$PROJECT_DIR$/2025-11-14-shopping-cart/2025-11-14-shopping-cart.iml" />
+      <module fileurl="file://$PROJECT_DIR$/2025-11-26-add-two-numbers/2025-11-26-add-two-numbers.iml" filepath="$PROJECT_DIR$/2025-11-26-add-two-numbers/2025-11-26-add-two-numbers.iml" />
+      <module fileurl="file://$PROJECT_DIR$/2025-11-26-area-of-a-rectangle/2025-11-26-area-of-a-rectangle.iml" filepath="$PROJECT_DIR$/2025-11-26-area-of-a-rectangle/2025-11-26-area-of-a-rectangle.iml" />
+      <module fileurl="file://$PROJECT_DIR$/2025-11-27-swap-two-variables/2025-11-27-swap-two-variables.iml" filepath="$PROJECT_DIR$/2025-11-27-swap-two-variables/2025-11-27-swap-two-variables.iml" />
+      <module fileurl="file://$PROJECT_DIR$/2025-11-28-square-root/2025-11-28-square-root.iml" filepath="$PROJECT_DIR$/2025-11-28-square-root/2025-11-28-square-root.iml" />
+      <module fileurl="file://$PROJECT_DIR$/2025-12-03-odd-or-even-number/2025-12-03-odd-or-even-number.iml" filepath="$PROJECT_DIR$/2025-12-03-odd-or-even-number/2025-12-03-odd-or-even-number.iml" />
+      <module fileurl="file://$PROJECT_DIR$/2025-12-05-reverse-a-number/2025-12-05-reverse-a-number.iml" filepath="$PROJECT_DIR$/2025-12-05-reverse-a-number/2025-12-05-reverse-a-number.iml" />
+      <module fileurl="file://$PROJECT_DIR$/2025-12-2-add-digits-in-a-number/2025-12-2-add-digits-in-a-number.iml" filepath="$PROJECT_DIR$/2025-12-2-add-digits-in-a-number/2025-12-2-add-digits-in-a-number.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/BlogCode.iml" filepath="$PROJECT_DIR$/.idea/BlogCode.iml" />
+    </modules>
+  </component>
+</project>
