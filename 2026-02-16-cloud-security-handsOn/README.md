@@ -40,6 +40,7 @@ Theme: Cloud Security & DevOps Hands-on
 2. [implement-secure-cloud-solutions](https://learn.microsoft.com/en-us/training/paths/az-204-implement-secure-cloud-solutions?WT.mc_id=studentamb_477755)
 3. [secure-your-cloud-apps](https://learn.microsoft.com/en-us/training/paths/secure-your-cloud-apps?WT.mc_id=studentamb_477755)
 4. [secure-your-cloud-data](https://learn.microsoft.com/en-us/training/paths/secure-your-cloud-data?WT.mc_id=studentamb_477755)
+5. [azure-fundamentals](https://learn.microsoft.com/en-us/training/courses/az-900t00?WT.mc_id=studentamb_477755)
 
 `DAY 2: Tomorrow:`
 - DevOps (applied) in real life
