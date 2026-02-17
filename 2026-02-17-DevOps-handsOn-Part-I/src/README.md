@@ -1,13 +1,13 @@
 This a continuation of the series `cloud security and DevOps HandsOn worshop`
 
-Today we will do part I of the DevOps hands-on workshop, we will manually containerize an application and deploy to azure.
-
 TOPICS:
 
 - Containerization - Docker
 - GitHub Actions - CI/CD pipeline
 - Azure Web App for Containers - Deployment
 - Azure Container Registry - Container registry
+
+Today we will do part I of the DevOps hands-on workshop, we will manually containerize an application and deploy to azure.
 
 USEFUL LINKS
 
