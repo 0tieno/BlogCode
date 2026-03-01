@@ -14,7 +14,7 @@ public class BinaryAndLinearSearch {
         int[] nums = {5,7,9,11,13};
 
         // The number we're looking for
-        int target = 13;
+        int target = 11;
 
         // LINEAR SEARCH: Check each element one by one until we find the target
         int result1 = linearSearch(nums, target);
