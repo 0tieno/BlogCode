@@ -1,4 +1,6 @@
-package com.learning.ms_student_application.student;
+package com.learning.ms_student_application.service;
+
+import com.learning.ms_student_application.student.Student;
 
 import java.util.List;
 

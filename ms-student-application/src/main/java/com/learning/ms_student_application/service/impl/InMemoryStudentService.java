@@ -1,11 +1,14 @@
-package com.learning.ms_student_application.student;
+package com.learning.ms_student_application.service.impl;
 
+import com.learning.ms_student_application.service.StudentService;
+import com.learning.ms_student_application.student.InMemoryStudentDao;
+import com.learning.ms_student_application.student.Student;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class InMemoryStudentService implements StudentService{
+public class InMemoryStudentService implements StudentService {
 
     private final InMemoryStudentDao dao;
 
