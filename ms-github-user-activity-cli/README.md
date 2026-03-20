@@ -23,6 +23,6 @@ Flow:
 3. Send request
 4. Read response
 
-https://roadmap.sh/projects/github-user-activity
+[project URL](https://roadmap.sh/projects/github-user-activity)
 
 
