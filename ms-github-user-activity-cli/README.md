@@ -23,6 +23,6 @@ Flow:
 3. Send request
 4. Read response
 
-https://github.com/0tieno/BlogCode/tree/main/ms-github-user-activity-cli
+https://roadmap.sh/projects/github-user-activity
 
 
