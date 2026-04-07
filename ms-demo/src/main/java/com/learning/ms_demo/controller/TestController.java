@@ -2,6 +2,7 @@ package com.learning.ms_demo.controller;
 
 import com.learning.ms_demo.Student;
 import com.learning.ms_demo.repository.StudentRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,6 +34,12 @@ public class TestController {
     @GetMapping("/students/search/{student-name}")
     public List<Student> getStudentByFirstName(@PathVariable("student-name") String name){
         return studentRepository.findAllByFirstnameContaining(name);
+    }
+
+    @DeleteMapping("/students/{student-id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteStudentById(@PathVariable("student-id") Integer Id){
+        studentRepository.deleteById(Id);
     }
 
 
