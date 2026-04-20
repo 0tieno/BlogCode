@@ -1,6 +1,7 @@
 package com.learning.ms_demo;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,7 +16,6 @@ public class Student {
     @GeneratedValue
     private Integer id;
 
-    @Column(name = "c_firstname")
     private String firstname;
 
     private String lastname;
@@ -24,6 +24,19 @@ public class Student {
     private String email;
 
     private int age;
+
+    @OneToOne(
+            mappedBy = "student",
+            cascade = CascadeType.ALL
+    )
+
+    private StudentProfile studentProfile;
+
+    @ManyToOne
+    @JoinColumn(name = "school_id")
+
+    @JsonBackReference
+    private School school;
 
     public Student() {
     }
