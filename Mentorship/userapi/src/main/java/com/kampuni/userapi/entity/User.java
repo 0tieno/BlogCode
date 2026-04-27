@@ -1,11 +1,13 @@
 package com.kampuni.userapi.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
+
+
+/*
+    rep our database table
+*/
 
 
 @Entity
@@ -19,12 +21,8 @@ public class User {
     private Long id;
 
     @Column(unique = true)
-    @Email
-    @NotBlank
     private String email;
     private String name;
-
-    @Min(1)
     private int age;
 
     public User() {
