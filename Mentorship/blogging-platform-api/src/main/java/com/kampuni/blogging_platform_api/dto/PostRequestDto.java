@@ -8,7 +8,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class PostRequest {
+public class PostRequestDto {
 
     @NotBlank
     private String title;

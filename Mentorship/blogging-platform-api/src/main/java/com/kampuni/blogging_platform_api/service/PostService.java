@@ -1,15 +1,15 @@
 package com.kampuni.blogging_platform_api.service;
 
-import com.kampuni.blogging_platform_api.dto.PostRequest;
-import com.kampuni.blogging_platform_api.dto.PostResponse;
+import com.kampuni.blogging_platform_api.dto.PostRequestDto;
+import com.kampuni.blogging_platform_api.dto.PostResponseDto;
 
 import java.util.List;
 
 public interface PostService {
 
-    PostResponse createPost(PostRequest postRequest);
-    List<PostResponse> getAllPost();
-    PostResponse getOne(Long id);
-    PostResponse updatePost(Long id, PostRequest postRequest);
+    PostResponseDto createPost(PostRequestDto postRequestDto);
+    List<PostResponseDto> getAllPost();
+    PostResponseDto getOne(Long id);
+    PostResponseDto updatePost(Long id, PostRequestDto postRequestDto);
     void deletePost(Long id);
 }

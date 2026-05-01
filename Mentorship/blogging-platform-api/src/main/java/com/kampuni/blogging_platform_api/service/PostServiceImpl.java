@@ -1,12 +1,10 @@
 package com.kampuni.blogging_platform_api.service;
 
-import com.kampuni.blogging_platform_api.dto.PostRequest;
-import com.kampuni.blogging_platform_api.dto.PostResponse;
+import com.kampuni.blogging_platform_api.dto.PostRequestDto;
+import com.kampuni.blogging_platform_api.dto.PostResponseDto;
 import com.kampuni.blogging_platform_api.entity.Post;
 import com.kampuni.blogging_platform_api.repository.PostRespository;
-import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,14 +19,14 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
-    public PostResponse createPost(PostRequest postRequest) {
+    public PostResponseDto createPost(PostRequestDto postRequestDto) {
 
         Post post = new Post();
 
-        post.setTitle(postRequest.getTitle());
-        post.setContent(postRequest.getContent());
-        post.setCategory(postRequest.getCategory());
-        post.setTags(postRequest.getTags());
+        post.setTitle(postRequestDto.getTitle());
+        post.setContent(postRequestDto.getContent());
+        post.setCategory(postRequestDto.getCategory());
+        post.setTags(postRequestDto.getTags());
 
         post.setCreatedAt(LocalDateTime.now());
         post.setUpdatedAt(LocalDateTime.now());
@@ -39,33 +37,40 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
-    public List<PostResponse> getAllPost() {
-        return postRespository.findAll().stream().map(this::mapToResponse).toList();
+    public List<PostResponseDto> getAllPost() {
+        return postRespository
+                .findAll()
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
     }
 
     @Override
-    public PostResponse getOne(Long id) {
-        Post post = postRespository.findById(id).orElseThrow(() -> new RuntimeException("post not found"));
+    public PostResponseDto getOne(Long id) {
+        Post post = postRespository
+                .findById(id)
+                .orElseThrow(() -> new RuntimeException("post not found"));
         return mapToResponse(post);
     }
 
     @Override
-    public PostResponse updatePost(
+    public PostResponseDto updatePost(
             Long id,
-            @Valid @RequestBody PostRequest postRequest) {
+            PostRequestDto postRequestDto) {
 
-        Post post = new Post();
+        Post post = postRespository
+                .findById(id)
+                .orElseThrow(() -> new RuntimeException("post not found"));
 
-        post.setTitle(postRequest.getTitle());
-        post.setContent(postRequest.getContent());
-        post.setCategory(postRequest.getCategory());
-        post.setTags(postRequest.getTags());
+        post.setTitle(postRequestDto.getTitle());
+        post.setContent(postRequestDto.getContent());
+        post.setCategory(postRequestDto.getCategory());
+        post.setTags(postRequestDto.getTags());
         post.setUpdatedAt(LocalDateTime.now());
 
         Post updatedPost = postRespository.save(post);
 
         return mapToResponse(updatedPost);
-
 
     }
 
@@ -74,19 +79,19 @@ public class PostServiceImpl implements PostService{
         postRespository.deleteById(id);
     }
 
-    private PostResponse mapToResponse(Post post){
+    private PostResponseDto mapToResponse(Post post){
 
-        PostResponse postResponse = new PostResponse();
+        PostResponseDto postResponseDto = new PostResponseDto();
 
-        postResponse.setId(post.getId());
-        postResponse.setTitle(post.getTitle());
-        postResponse.setContent(post.getContent());
-        postResponse.setCategory(post.getCategory());
-        postResponse.setTags(post.getTags());
-        postResponse.setCreatedAt(post.getCreatedAt());
-        postResponse.setUpdatedAt(post.getUpdatedAt());
+        postResponseDto.setId(post.getId());
+        postResponseDto.setTitle(post.getTitle());
+        postResponseDto.setContent(post.getContent());
+        postResponseDto.setCategory(post.getCategory());
+        postResponseDto.setTags(post.getTags());
+        postResponseDto.setCreatedAt(post.getCreatedAt());
+        postResponseDto.setUpdatedAt(post.getUpdatedAt());
 
-        return postResponse;
+        return postResponseDto;
 
     }
 }
