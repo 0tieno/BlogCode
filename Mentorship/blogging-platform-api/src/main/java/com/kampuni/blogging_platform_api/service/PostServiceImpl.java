@@ -24,10 +24,10 @@ public class PostServiceImpl implements PostService{
 
         Post post = new Post();
 
-        post.setTitle(postRequestDto.getTitle());
-        post.setContent(postRequestDto.getContent());
-        post.setCategory(postRequestDto.getCategory());
-        post.setTags(postRequestDto.getTags());
+        post.setTitle(postRequestDto.title());
+        post.setContent(postRequestDto.content());
+        post.setCategory(postRequestDto.category());
+        post.setTags(postRequestDto.tags());
 
         post.setCreatedAt(LocalDateTime.now());
         post.setUpdatedAt(LocalDateTime.now());
@@ -70,10 +70,10 @@ public class PostServiceImpl implements PostService{
                 .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("post not found"));
 
-        post.setTitle(postRequestDto.getTitle());
-        post.setContent(postRequestDto.getContent());
-        post.setCategory(postRequestDto.getCategory());
-        post.setTags(postRequestDto.getTags());
+        post.setTitle(postRequestDto.title());
+        post.setContent(postRequestDto.content());
+        post.setCategory(postRequestDto.category());
+        post.setTags(postRequestDto.tags());
         post.setUpdatedAt(LocalDateTime.now());
 
         Post updatedPost = postRespository.save(post);
@@ -87,19 +87,16 @@ public class PostServiceImpl implements PostService{
         postRespository.deleteById(id);
     }
 
-    private PostResponseDto mapToResponse(Post post){
+    private PostResponseDto mapToResponse(Post post) {
 
-        PostResponseDto postResponseDto = new PostResponseDto();
-
-        postResponseDto.setId(post.getId());
-        postResponseDto.setTitle(post.getTitle());
-        postResponseDto.setContent(post.getContent());
-        postResponseDto.setCategory(post.getCategory());
-        postResponseDto.setTags(post.getTags());
-        postResponseDto.setCreatedAt(post.getCreatedAt());
-        postResponseDto.setUpdatedAt(post.getUpdatedAt());
-
-        return postResponseDto;
-
+        return new PostResponseDto(
+                post.getId(),
+                post.getTitle(),
+                post.getContent(),
+                post.getCategory(),
+                post.getTags(),
+                post.getCreatedAt(),
+                post.getUpdatedAt()
+        );
     }
 }
