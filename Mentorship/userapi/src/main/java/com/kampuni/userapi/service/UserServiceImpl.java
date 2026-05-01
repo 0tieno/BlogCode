@@ -1,7 +1,7 @@
 package com.kampuni.userapi.service;
 
-import com.kampuni.userapi.dto.UserRequest;
-import com.kampuni.userapi.dto.UserResponse;
+import com.kampuni.userapi.dto.UserRequestDto;
+import com.kampuni.userapi.dto.UserResponseDto;
 import com.kampuni.userapi.entity.User;
 import com.kampuni.userapi.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -18,12 +18,13 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public UserResponse createUser(UserRequest userRequest) {
+    public UserResponseDto createUser(UserRequestDto userRequestDto) {
 
         User user = new User();
-        user.setName(userRequest.getName());
-        user.setEmail(userRequest.getEmail());
-        user.setAge(userRequest.getAge());
+
+        user.setName(userRequestDto.getName());
+        user.setEmail(userRequestDto.getEmail());
+        user.setAge(userRequestDto.getAge());
 
         User savedUser = userRepository.save(user);
         return mapToResponse (savedUser);
@@ -31,7 +32,7 @@ public class UserServiceImpl implements UserService{
 
 
     @Override
-    public List<UserResponse> getAllUsers() {
+    public List<UserResponseDto> getAllUsers() {
         return userRepository
                 .findAll()
                 .stream()
@@ -40,7 +41,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public UserResponse getUser(Long id) {
+    public UserResponseDto getUser(Long id) {
         User user = userRepository
                 .findById(id)
                 .orElseThrow(()-> new RuntimeException("User Not Found"));
@@ -48,12 +49,15 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public UserResponse updateUser(Long id, UserRequest userRequest) {
+    public UserResponseDto updateUser(Long id, UserRequestDto userRequestDto) {
+
         User user = userRepository
-                .findById(id).orElseThrow(()->new RuntimeException("User Not Found"));
-        user.setAge(userRequest.getAge());
-        user.setName(userRequest.getName());
-        user.setEmail(userRequest.getEmail());
+                .findById(id)
+                .orElseThrow(()->new RuntimeException("User Not Found"));
+
+        user.setAge(userRequestDto.getAge());
+        user.setName(userRequestDto.getName());
+        user.setEmail(userRequestDto.getEmail());
 
         User updatedUser = userRepository.save(user);
 
@@ -65,15 +69,15 @@ public class UserServiceImpl implements UserService{
         userRepository.deleteById(id);
     }
 
-    private UserResponse mapToResponse(User user){
-        UserResponse userResponse = new UserResponse();
+    private UserResponseDto mapToResponse(User user){
+        UserResponseDto userResponseDto = new UserResponseDto();
 
-        userResponse.setId(user.getId());
-        userResponse.setAge(user.getAge());
-        userResponse.setName(user.getName());
-        userResponse.setEmail(user.getEmail());
+        userResponseDto.setId(user.getId());
+        userResponseDto.setAge(user.getAge());
+        userResponseDto.setName(user.getName());
+        userResponseDto.setEmail(user.getEmail());
 
-        return userResponse;
+        return userResponseDto;
     }
 
 }
