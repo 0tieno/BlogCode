@@ -1,9 +1,10 @@
 package com.kampuni.userapi.controller;
 
-import com.kampuni.userapi.dto.UserRequest;
-import com.kampuni.userapi.dto.UserResponse;
+import com.kampuni.userapi.dto.UserRequestDto;
+import com.kampuni.userapi.dto.UserResponseDto;
 import com.kampuni.userapi.service.UserService;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,24 +20,24 @@ public class UserController {
     }
 
     @PostMapping
-    public UserResponse createUser(@Valid @RequestBody UserRequest userRequest){
-        return userService.createUser(userRequest);
+    public UserResponseDto createUser(@Valid @RequestBody UserRequestDto userRequestDto){
+        return userService.createUser(userRequestDto);
     }
 
     @GetMapping
-    public List<UserResponse> getAllUsers(){
+    public List<UserResponseDto> getAllUsers(){
         return userService.getAllUsers();
     }
 
     @GetMapping("/{id}")
-    public UserResponse getUserById(@PathVariable Long id){
+    public UserResponseDto getUserById(@PathVariable Long id){
         return userService.getUser(id);
     }
 
     @PutMapping("/{id}")
-    public UserResponse updateUser(@PathVariable Long id,
-                                   @Valid @RequestBody UserRequest userRequest){
-        return userService.updateUser(id, userRequest);
+    public UserResponseDto updateUser(@PathVariable Long id,
+                                      @Valid @RequestBody UserRequestDto userRequestDto){
+        return userService.updateUser(id, userRequestDto);
     }
 
     @DeleteMapping("/{id}")
