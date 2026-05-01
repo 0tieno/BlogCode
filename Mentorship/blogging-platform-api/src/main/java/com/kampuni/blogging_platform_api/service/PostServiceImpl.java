@@ -3,6 +3,7 @@ package com.kampuni.blogging_platform_api.service;
 import com.kampuni.blogging_platform_api.dto.PostRequestDto;
 import com.kampuni.blogging_platform_api.dto.PostResponseDto;
 import com.kampuni.blogging_platform_api.entity.Post;
+import com.kampuni.blogging_platform_api.exception.ResourceNotFoundException;
 import com.kampuni.blogging_platform_api.repository.PostRespository;
 import org.springframework.stereotype.Service;
 
@@ -37,9 +38,16 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
-    public List<PostResponseDto> getAllPost() {
-        return postRespository
-                .findAll()
+    public List<PostResponseDto> getAllPosts(String term) {
+
+        List<Post> posts;
+
+        if (term != null && !term.isEmpty()){
+            posts = postRespository.findByTitleContainingIgnoreCaseOrContentContainingIgnoreCaseOrCategoryContainingIgnoreCase(term, term, term);
+        }else {
+            posts = postRespository.findAll();
+        }
+        return posts
                 .stream()
                 .map(this::mapToResponse)
                 .toList();
@@ -49,7 +57,7 @@ public class PostServiceImpl implements PostService{
     public PostResponseDto getOne(Long id) {
         Post post = postRespository
                 .findById(id)
-                .orElseThrow(() -> new RuntimeException("post not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Post Not found"));
         return mapToResponse(post);
     }
 
@@ -60,7 +68,7 @@ public class PostServiceImpl implements PostService{
 
         Post post = postRespository
                 .findById(id)
-                .orElseThrow(() -> new RuntimeException("post not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("post not found"));
 
         post.setTitle(postRequestDto.getTitle());
         post.setContent(postRequestDto.getContent());
