@@ -3,6 +3,8 @@
 A simple RESTful API for a personal blogging platform built with Spring Boot and PostgreSQL.
 
 > **Project Reference:** https://roadmap.sh/projects/blogging-platform-api
+>
+> **GitHub Repository:** https://github.com/0tieno/BlogCode/tree/main/Mentorship/blogging-platform-api
 
 ---
 
