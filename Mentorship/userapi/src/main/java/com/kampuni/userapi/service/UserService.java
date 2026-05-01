@@ -1,19 +1,19 @@
 package com.kampuni.userapi.service;
 
-import com.kampuni.userapi.dto.UserRequest;
-import com.kampuni.userapi.dto.UserResponse;
+import com.kampuni.userapi.dto.UserRequestDto;
+import com.kampuni.userapi.dto.UserResponseDto;
 
 import java.util.List;
 
 public interface UserService {
 
-    UserResponse createUser(UserRequest userRequest);
+    UserResponseDto createUser(UserRequestDto userRequestDto);
 
-    List<UserResponse> getAllUsers();
+    List<UserResponseDto> getAllUsers();
 
-    UserResponse getUser(Long id);
+    UserResponseDto getUser(Long id);
 
-    UserResponse updateUser(Long id, UserRequest userRequest);
+    UserResponseDto updateUser(Long id, UserRequestDto userRequestDto);
 
     void delete(Long id);
 }
