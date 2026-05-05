@@ -1,8 +1,6 @@
 package com.learn.hello.controller;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+
 
 // ══════════════════════════════════════════════════════════════════════════════
 // CONCEPT 1: What is a Controller?
@@ -14,6 +12,10 @@ import org.springframework.web.bind.annotation.*;
 // Think of it like a receptionist:
 //   "GET /greet/Alice"  → the receptionist says "I'll handle that" and calls greet("Alice")
 // ══════════════════════════════════════════════════════════════════════════════
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 // @RestController = @Controller + @ResponseBody
 //   This tells Spring: "This class handles web requests, and its methods return data (not HTML pages)."
@@ -40,6 +42,7 @@ public class GreetingController {
     // Returns a plain string. Spring wraps it in a 200 OK response automatically.
     @GetMapping
     public String helloWorld() {
+
         return "Hello, World!";
     }
 
@@ -57,6 +60,7 @@ public class GreetingController {
     // Handles GET /greet/{name}
     @GetMapping("/{name}")
     public String greetByName(@PathVariable String name) {
+
         return "Hello, " + name + "!";
     }
 
