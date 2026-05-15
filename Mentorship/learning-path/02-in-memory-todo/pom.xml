@@ -7,18 +7,18 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.4.5</version>
+        <version>4.0.6</version>
     </parent>
 
     <groupId>com.learn</groupId>
     <artifactId>02-in-memory-todo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <properties><java.version>21</java.version></properties>
+    <properties><java.version>25</java.version></properties>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>spring-boot-starter-webmvc</artifactId>
         </dependency>
         <!-- Adds @NotBlank, @Email, @Size, @Valid etc. -->
         <dependency>
@@ -27,7 +27,7 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
+            <artifactId>spring-boot-starter-webmvc-test</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
