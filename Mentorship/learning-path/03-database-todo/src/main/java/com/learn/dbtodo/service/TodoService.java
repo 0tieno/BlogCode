@@ -3,7 +3,6 @@ package com.learn.dbtodo.service;
 import com.learn.dbtodo.dto.TodoRequest;
 import com.learn.dbtodo.dto.TodoResponse;
 import com.learn.dbtodo.entity.Todo;
-import com.learn.dbtodo.exception.TodoNotFoundException;
 import com.learn.dbtodo.repository.TodoRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -115,7 +114,11 @@ public class TodoService {
     }
 
     private TodoResponse toResponse(Todo todo) {
-        return new TodoResponse(todo.getId(), todo.getTitle(), todo.getDescription(),
-                todo.isCompleted(), todo.getCreatedAt());
+        return new TodoResponse(
+                todo.getId(),
+                todo.getTitle(),
+                todo.getDescription(),
+                todo.isCompleted(),
+                todo.getCreatedAt());
     }
 }
