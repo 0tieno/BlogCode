@@ -4,22 +4,30 @@ import com.learn.secured.dto.TodoRequest;
 import com.learn.secured.dto.TodoResponse;
 import com.learn.secured.service.TodoService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/todos")
 public class TodoController {
 
     private final TodoService todoService;
-    public TodoController(TodoService todoService) { this.todoService = todoService; }
 
+    public TodoController(TodoService todoService) {
+        this.todoService = todoService;
+    }
+
+    // Paginated: GET /api/todos?page=0&size=10&sort=createdAt,desc
     @GetMapping
-    public ResponseEntity<List<TodoResponse>> getMyTodos() {
-        return ResponseEntity.ok(todoService.getMyTodos());
+    public ResponseEntity<Page<TodoResponse>> getMyTodos(
+            @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
+    ) {
+        return ResponseEntity.ok(todoService.getMyTodos(pageable));
     }
 
     @PostMapping
@@ -43,4 +51,3 @@ public class TodoController {
         return ResponseEntity.noContent().build();
     }
 }
-
