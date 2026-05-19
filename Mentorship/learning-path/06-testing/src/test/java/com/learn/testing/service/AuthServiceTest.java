@@ -5,6 +5,8 @@ import com.learn.testing.dto.LoginRequest;
 import com.learn.testing.dto.RegisterRequest;
 import com.learn.testing.entity.User;
 import com.learn.testing.repository.UserRepository;
+import com.learn.testing.exception.EmailAlreadyExistsException;
+import com.learn.testing.exception.InvalidCredentialsException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -76,9 +78,14 @@ class AuthServiceTest {
                 .thenReturn(Optional.of(new User("Alice", "alice@test.com", "hashed")));
 
         // assertThatThrownBy = this code MUST throw the specified exception
+        // ══════════════════════════════════════════════════════════════════════
+        // Now we assert the TYPED exception, not just RuntimeException.
+        // This is stronger: confirms the right exception class is thrown
+        // (which maps to 409 Conflict in GlobalExceptionHandler).
+        // ══════════════════════════════════════════════════════════════════════
         assertThatThrownBy(() -> authService.register(req))
-                .isInstanceOf(RuntimeException.class)
-                .hasMessage("Email already exists");
+                .isInstanceOf(EmailAlreadyExistsException.class)
+                .hasMessageContaining("alice@test.com");
 
         // never() = verify this was NOT called (no partial saves on failure)
         verify(userRepository, never()).save(any());
@@ -109,7 +116,7 @@ class AuthServiceTest {
         when(userRepository.findByEmail("ghost@test.com")).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> authService.login(new LoginRequest("ghost@test.com", "pass")))
-                .isInstanceOf(RuntimeException.class)
+                .isInstanceOf(InvalidCredentialsException.class)
                 .hasMessage("Invalid credentials");
     }
 
@@ -124,7 +131,7 @@ class AuthServiceTest {
         when(passwordEncoder.matches("wrongpassword", "$2a$hashed")).thenReturn(false);
 
         assertThatThrownBy(() -> authService.login(req))
-                .isInstanceOf(RuntimeException.class)
+                .isInstanceOf(InvalidCredentialsException.class)
                 .hasMessage("Invalid credentials");
 
         // Token must NEVER be generated for a failed login
