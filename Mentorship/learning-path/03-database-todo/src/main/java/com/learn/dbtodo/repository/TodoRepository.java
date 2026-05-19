@@ -4,6 +4,8 @@ import com.learn.dbtodo.entity.Todo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 // ══════════════════════════════════════════════════════════════════════════════
 // CONCEPT: Repository — the database access layer
 //
@@ -30,6 +32,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TodoRepository extends JpaRepository<Todo, Long> {
     // Spring generates this SQL: SELECT * FROM todos WHERE completed = ?
-    java.util.List<Todo> findByCompleted(boolean completed);
+    List<Todo> findByCompleted(boolean completed);
 }
 
