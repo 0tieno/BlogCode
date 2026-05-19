@@ -6,10 +6,12 @@
 - **`@Entity`** — turning a Java class into a database table
 - **`@Id`, `@GeneratedValue`** — primary keys and auto-increment
 - **`@Column`** — controlling column properties (nullable, unique, etc.)
-- **`@ManyToOne` / `@JoinColumn`** — relationships between tables
 - **`@PrePersist`** — running code automatically before saving
 - **`JpaRepository`** — Spring's magic interface that writes SQL for you
+- **Pagination** — `Pageable` and `Page<T>`, why `findAll()` is dangerous at scale
+- **`@Transactional`** — guaranteeing all-or-nothing database operations
 - **Why Lombok?** — removing getters/setters boilerplate with `@Getter @Setter`
+- **Logging with `@Slf4j`** — how to trace what your app is doing
 - **H2 in-memory database** — a database that runs inside your app (no install needed)
 
 ---
@@ -64,8 +66,17 @@ by changing 3 lines in `application.properties`.
 
 ## Endpoints to test
 
-Same as Project 02. The API hasn't changed — only the storage layer did.
-This is the power of layered architecture: the controller and service stay the same.
+Same as Project 02 — but `GET /api/todos` is now **paginated**:
+
+| Method | URL | Description |
+|--------|-----|-------------|
+| GET | `/api/todos` | Get first page of todos (10 per page, newest first) |
+| GET | `/api/todos?page=1&size=5` | Get page 1 with 5 items per page |
+| GET | `/api/todos?sort=title,asc` | Sort by title ascending |
+| GET | `/api/todos/{id}` | Get one todo by ID |
+| POST | `/api/todos` | Create a todo |
+| PUT | `/api/todos/{id}` | Update a todo |
+| DELETE | `/api/todos/{id}` | Delete a todo |
 
 ---
 
@@ -79,4 +90,8 @@ This is the power of layered architecture: the controller and service stay the s
 | **Repository** | An interface that gives you database operations (save, find, delete) |
 | **H2** | A lightweight in-memory database, perfect for learning and testing |
 | **Lombok** | A library that generates boilerplate code (getters, setters, constructors) |
+| **@Slf4j** | Lombok annotation that generates a `log` field for logging |
+| **@Transactional** | Wraps a method in a DB transaction — rolls back everything if it throws |
+| **Pageable** | Carries page number, size, and sort order from the client to the repository |
+| **Page\<T\>** | Wraps a page of results plus metadata (total pages, total elements) |
 
