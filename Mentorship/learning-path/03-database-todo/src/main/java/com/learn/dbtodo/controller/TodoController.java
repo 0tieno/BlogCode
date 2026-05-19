@@ -4,13 +4,16 @@ import com.learn.dbtodo.dto.TodoRequest;
 import com.learn.dbtodo.dto.TodoResponse;
 import com.learn.dbtodo.service.TodoService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
-// This controller is IDENTICAL to Project 02's controller.
+// This controller is almost identical to Project 02's controller.
+// The only change: getAll() now accepts a Pageable parameter.
 // The controller knows NOTHING about the database change — it just talks to TodoService.
 @RestController
 @RequestMapping("/api/todos")
@@ -22,9 +25,31 @@ public class TodoController {
         this.todoService = todoService;
     }
 
+    // ══════════════════════════════════════════════════════════════════════════
+    // CONCEPT: Pageable in the controller
+    //
+    // Spring MVC automatically reads these query parameters and builds a Pageable:
+    //   GET /api/todos                          → page 0, 10 items, sorted by createdAt DESC
+    //   GET /api/todos?page=1                   → page 1, 10 items
+    //   GET /api/todos?page=0&size=5            → page 0, 5 items
+    //   GET /api/todos?sort=title,asc           → sorted by title ascending
+    //
+    // @PageableDefault sets the DEFAULT values used when the client sends NO params.
+    // Without it, Spring defaults to page=0, size=20, unsorted.
+    // ══════════════════════════════════════════════════════════════════════════
     @GetMapping
-    public ResponseEntity<List<TodoResponse>> getAll() {
-        return ResponseEntity.ok(todoService.getAll());
+    public ResponseEntity<Page<TodoResponse>> getAll(
+            @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
+    ) {
+        return ResponseEntity.ok(todoService.getAll(pageable));
+        // The response body is now a Page<TodoResponse>, which looks like:
+        // {
+        //   "content": [ {...}, {...} ],
+        //   "totalElements": 42,
+        //   "totalPages": 5,
+        //   "number": 0,
+        //   "size": 10
+        // }
     }
 
     @GetMapping("/{id}")
@@ -57,4 +82,3 @@ public class TodoController {
                 : ResponseEntity.notFound().build();
     }
 }
-
