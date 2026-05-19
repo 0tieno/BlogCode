@@ -11,18 +11,24 @@ import java.util.HashMap;
 import java.util.Map;
 
 // ══════════════════════════════════════════════════════════════════════════════
-// CONCEPT: Global Exception Handler
+// CONCEPT: Typed Exception Handlers — the right HTTP status for each error
 //
-// Without this, when @Valid fails, Spring returns a 400 with a MASSIVE ugly JSON
-// blob that's hard to read. With this, we control exactly what the client sees.
+// The key improvement over a single catch-all RuntimeException handler:
 //
-// @RestControllerAdvice = "intercept exceptions from any controller"
-// @ExceptionHandler      = "handle this specific type of exception"
+//   Before (naive):   all errors → 400 Bad Request
+//   After  (correct): each error type maps to its own HTTP status:
+//
+//     TodoNotFoundException   → 404 Not Found    (the resource is missing)
+//     ValidationException     → 400 Bad Request  (the request body is wrong)
+//
+// Spring evaluates handlers from MOST specific to LEAST specific, so:
+//   TodoNotFoundException (more specific) is caught first.
+//   RuntimeException      (less specific) is only caught if nothing else matches.
 // ══════════════════════════════════════════════════════════════════════════════
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    // Handles validation failures (@Valid + @NotBlank, @Size, etc.)
+    // ── 400 Bad Request ── validation failures (@Valid + @NotBlank, @Size, etc.)
     // Returns a clean map of { "fieldName": "error message" }
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidation(MethodArgumentNotValidException ex) {
@@ -33,5 +39,19 @@ public class GlobalExceptionHandler {
         // Example response: { "title": "Title is required" }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
     }
-}
 
+    // ── 404 Not Found ── a specific todo was requested but doesn't exist
+    @ExceptionHandler(TodoNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleNotFound(TodoNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", ex.getMessage()));
+    }
+
+    // ── 500 Internal Server Error ── unexpected crash (safety net)
+    // Any RuntimeException NOT caught above falls here.
+    // In production you would log this with a log.error() call (see Project 03+).
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<Map<String, String>> handleUnexpected(RuntimeException ex) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of("error", "An unexpected error occurred"));
+    }
+}
