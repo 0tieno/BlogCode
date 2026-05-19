@@ -6,6 +6,7 @@ import com.learn.testing.entity.Todo;
 import com.learn.testing.entity.User;
 import com.learn.testing.repository.TodoRepository;
 import com.learn.testing.repository.UserRepository;
+import com.learn.testing.exception.TodoNotFoundException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -71,18 +75,18 @@ class TodoServiceTest {
     // ──────────────────────────────────────────────────────────────────────────
     @Test
     void getMyTodos_returnsOnlyAlicesTodos() {
+        Pageable pageable = PageRequest.of(0, 10);
         when(userRepository.findByEmail("alice@test.com")).thenReturn(Optional.of(alice));
-        when(todoRepository.findByUserId(1L)).thenReturn(List.of(
+        when(todoRepository.findByUserId(1L, pageable)).thenReturn(new PageImpl<>(List.of(
                 buildTodo(1L, alice, false),
                 buildTodo(2L, alice, true)
-        ));
+        )));
 
-        List<TodoResponse> result = todoService.getMyTodos();
+        var result = todoService.getMyTodos(pageable);
 
-        assertThat(result).hasSize(2);
-        assertThat(result.get(1).completed()).isTrue();
-        // Confirm query was made using ALICE's id (1L), not anyone else's
-        verify(todoRepository).findByUserId(1L);
+        assertThat(result.getContent()).hasSize(2);
+        assertThat(result.getContent().get(1).completed()).isTrue();
+        verify(todoRepository).findByUserId(1L, pageable);
     }
 
     // ──────────────────────────────────────────────────────────────────────────
@@ -127,8 +131,8 @@ class TodoServiceTest {
 
         // ACT & ASSERT: Alice cannot touch Bob's todo
         assertThatThrownBy(() -> todoService.updateTodo(10L, new TodoRequest("hacked", null)))
-                .isInstanceOf(RuntimeException.class)
-                .hasMessage("Todo not found"); // deliberately vague (IDOR prevention)
+                .isInstanceOf(TodoNotFoundException.class)
+                .hasMessageContaining("10"); // IDOR prevention — deliberately vague, contains the id
 
         verify(todoRepository, never()).save(any()); // must never save
     }
@@ -174,8 +178,8 @@ class TodoServiceTest {
         when(todoRepository.findById(7L)).thenReturn(Optional.of(buildTodo(7L, bob, false)));
 
         assertThatThrownBy(() -> todoService.deleteTodo(7L))
-                .isInstanceOf(RuntimeException.class)
-                .hasMessage("Todo not found");
+                .isInstanceOf(TodoNotFoundException.class)
+                .hasMessageContaining("7");
 
         // The most critical assertion: delete must NEVER be called on another user's data
         verify(todoRepository, never()).delete(any());
@@ -187,8 +191,8 @@ class TodoServiceTest {
         when(todoRepository.findById(999L)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> todoService.deleteTodo(999L))
-                .isInstanceOf(RuntimeException.class)
-                .hasMessage("Todo not found");
+                .isInstanceOf(TodoNotFoundException.class)
+                .hasMessageContaining("999");
 
         verify(todoRepository, never()).delete(any());
     }
