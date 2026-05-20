@@ -4,13 +4,13 @@ package com.learn.todoapi.service;
 import com.learn.todoapi.dto.ToDoRequest;
 import com.learn.todoapi.dto.ToDoResponse;
 import com.learn.todoapi.entity.ToDo;
+import com.learn.todoapi.exception.TodoNotFoundException;
 import com.learn.todoapi.repository.ToDoRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
 
 @Service
 public class ToDoService {
@@ -27,10 +27,11 @@ public class ToDoService {
                 .map(this::toDoResponse);
     }
 
-    public Optional<ToDoResponse> getById(Long id){
+    public ToDoResponse getById(Long id){
         return toDoRepository
                 .findById(id)
-                .map(this::toDoResponse);
+                .map(this::toDoResponse)
+                .orElseThrow(() -> new TodoNotFoundException(id));
     }
 
     @Transactional
@@ -45,25 +46,20 @@ public class ToDoService {
     }
 
     @Transactional
-    public Optional<ToDoResponse> update(Long id, ToDoRequest toDoRequest){
-        return toDoRepository
-                .findById(id)
-                .map(toDo -> {
-                    toDo.setTitle(toDoRequest.title());
-                    toDo.setDescription(toDoRequest.description());
-
-                    return toDoResponse(toDoRepository.save(toDo));
-                });
+    public ToDoResponse update(Long id, ToDoRequest toDoRequest){
+        ToDo toDo = toDoRepository.findById(id)
+                .orElseThrow(() -> new TodoNotFoundException(id));
+        toDo.setTitle(toDoRequest.title());
+        toDo.setDescription(toDoRequest.description());
+        return toDoResponse(toDoRepository.save(toDo));
     }
 
     @Transactional
-    public Optional<ToDoResponse> toggleComplete(Long id){
-        return toDoRepository
-                .findById(id)
-                .map(toDo -> {
-                    toDo.setCompleted(!toDo.isCompleted());
-                    return toDoResponse(toDoRepository.save(toDo));
-        });
+    public ToDoResponse toggleComplete(Long id){
+        ToDo toDo = toDoRepository.findById(id)
+                .orElseThrow(() -> new TodoNotFoundException(id));
+        toDo.setCompleted(!toDo.isCompleted());
+        return toDoResponse(toDoRepository.save(toDo));
     }
 
     @Transactional
