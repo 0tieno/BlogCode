@@ -35,9 +35,7 @@ public class ToDoController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ToDoResponse> getById(@PathVariable Long id){
-        return toDoService.getById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(toDoService.getById(id));
     }
 
     @PostMapping
@@ -49,14 +47,12 @@ public class ToDoController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ToDoResponse> update(@PathVariable Long id, @Valid @RequestBody ToDoRequest toDoRequest){
-        return toDoService.update(id, toDoRequest).map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(toDoService.update(id, toDoRequest));
     }
 
     @PatchMapping("/{id}/complete")
     public ResponseEntity<ToDoResponse> toggleComplete(@PathVariable Long id){
-        return toDoService.toggleComplete(id).map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(toDoService.toggleComplete(id));
     }
 
     @DeleteMapping("/{id}")
