@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Maven Project Object Model (POM) for the "Hello Spring" curriculum project.
+
+    This is the FIRST project in the Spring Boot learning path. Its only goal is to
+    teach absolute beginners:
+      - What a minimal Spring Boot application looks like.
+      - How Maven wires Spring Boot's dependency management via a "parent" POM.
+      - How a REST controller, a service interface/implementation and a simple
+        domain object (a Java record) fit together.
+
+    Why "spring-boot-starter-webmvc" instead of the classic "spring-boot-starter-web"?
+    In this curriculum we standardise on the newer, more explicit starter name that
+    makes it obvious the project uses the Servlet-based Spring MVC stack (as opposed
+    to the reactive WebFlux stack). Ship this exact starter name in every module.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!--
+        Inheriting from "spring-boot-starter-parent" gives us:
+          - Curated dependency versions (no need to specify versions for Spring
+            managed libraries below).
+          - Sensible default plugin configuration (compiler release, resource
+            filtering, packaging, etc.).
+    -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>4.1.0</version>
+        <relativePath/> <!-- lookup parent from Maven repository, not the filesystem -->
+    </parent>
+
+    <groupId>com.blogcode</groupId>
+    <artifactId>hello-spring</artifactId>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
+
+    <name>01-hello-spring</name>
+    <description>
+        Beginner-friendly Spring Boot project demonstrating the smallest possible
+        REST application: an entry point class, a domain record, a service layer
+        and a controller.
+    </description>
+
+    <properties>
+        <!-- Java 25 is the target language level for every project in this curriculum. -->
+        <java.version>25</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
+
+    <dependencies>
+        <!--
+            Servlet-stack web starter (Spring MVC). Brings in an embedded Tomcat
+            server, Jackson for JSON (de)serialization, and Spring MVC itself.
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webmvc</artifactId>
+        </dependency>
+
+        <!--
+            Brings the jakarta.validation API (Bean Validation) onto the
+            classpath so DTOs such as GreetingController.GreetingRequest can
+            be annotated with constraints like @NotBlank.
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
+        <!--
+            Lombok removes boilerplate (getters/setters/constructors) via annotation
+            processing. Marked "provided"-like via optional=true so it is not leaked
+            into the runtime classpath of consumers of this jar.
+        -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!--
+            Test starter tailored to the Servlet MVC stack: brings JUnit 5,
+            Mockito, AssertJ and MockMvc so we can test controllers without
+            starting a real HTTP server.
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webmvc-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>hello-spring</finalName>
+        <plugins>
+            <!--
+                The Spring Boot Maven plugin repackages the jar into an executable
+                "fat jar" (java -jar target/hello-spring.jar) and wires up Lombok as
+                an annotation processor during compilation.
+            -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
