@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Maven Project Object Model (POM) for the "Student CRUD API" curriculum
+    project - the SECOND project in the Spring Boot learning path.
+
+    Building on 01-hello-spring, this project introduces persistence: a real
+    relational database (H2, in-memory), Spring Data JPA repositories, Bean
+    Validation on incoming DTOs, and centralised exception handling that
+    converts internal errors into clean JSON error responses.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>4.1.0</version>
+        <relativePath/> <!-- lookup parent from Maven repository, not the filesystem -->
+    </parent>
+
+    <groupId>com.blogcode</groupId>
+    <artifactId>student-crud-api</artifactId>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
+
+    <name>02-student-crud-api</name>
+    <description>
+        Beginner-friendly Spring Boot CRUD API for managing students, backed
+        by an in-memory H2 database via Spring Data JPA, with request
+        validation, DTO separation and centralised exception handling.
+    </description>
+
+    <properties>
+        <!-- Java 25 is the target language level for every project in this curriculum. -->
+        <java.version>25</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
+
+    <dependencies>
+        <!--
+            Servlet-stack web starter (Spring MVC). Brings in an embedded
+            Tomcat server, Jackson for JSON (de)serialization, and Spring MVC.
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webmvc</artifactId>
+        </dependency>
+
+        <!--
+            Spring Data JPA: provides the Repository abstraction, Hibernate
+            as the default JPA provider, and automatic transaction handling
+            for repository methods.
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+        <!--
+            Bean Validation (jakarta.validation) support, enabling annotations
+            such as @NotBlank / @Email / @Size on our request DTOs and
+            triggering automatic validation via @Valid in the controller.
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
+        <!--
+            In-memory relational database used for this curriculum project so
+            students can run the API with zero external setup. Data is reset
+            every time the application restarts, and pre-loaded from
+            src/main/resources/data.sql.
+        -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!--
+            Lombok removes boilerplate (getters/setters/constructors) via
+            annotation processing. Marked optional=true so it does not leak
+            onto the runtime classpath of anything depending on this jar.
+        -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!--
+            Test starter tailored to the Servlet MVC stack: brings JUnit 5,
+            Mockito, AssertJ and MockMvc so we can test controllers without
+            starting a real HTTP server.
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webmvc-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>student-crud-api</finalName>
+        <plugins>
+            <!--
+                The Spring Boot Maven plugin repackages the jar into an
+                executable "fat jar" and wires up Lombok as an annotation
+                processor during compilation.
+            -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

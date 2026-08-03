@@ -3,8 +3,6 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/Mentorship/BookManagement" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/decode-escrow-project" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/ms-decode-blockchain-gateway" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/ms-learning-java-basics" vcs="Git" />
   </component>
 </project>
