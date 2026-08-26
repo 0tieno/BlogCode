@@ -1,0 +1,33 @@
+# Docker Compose file for the Blog API's PostgreSQL database.
+#
+# Why Docker Compose? Beginners should not have to install and configure PostgreSQL
+# manually on their machine. `docker compose up -d` gives every student an identical,
+# disposable database that matches the credentials expected by application.yml.
+#
+# Usage:
+#   docker compose up -d      # start Postgres in the background
+#   docker compose logs -f    # tail the database logs
+#   docker compose down       # stop and remove the container (data volume kept)
+#   docker compose down -v    # stop and wipe the data volume too
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: blog-api-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: blogdb
+      POSTGRES_USER: bloguser
+      POSTGRES_PASSWORD: blogpass
+    ports:
+      - "5432:5432"
+    volumes:
+      - blog-api-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U bloguser -d blogdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  blog-api-postgres-data:

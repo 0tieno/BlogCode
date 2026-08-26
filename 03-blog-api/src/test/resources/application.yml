@@ -1,0 +1,16 @@
+# =============================================================================
+# Test configuration: overrides the production PostgreSQL datasource with an
+# in-memory H2 database so tests run fast, in isolation, and without requiring
+# Docker/PostgreSQL to be running.
+# =============================================================================
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:blogdb;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false

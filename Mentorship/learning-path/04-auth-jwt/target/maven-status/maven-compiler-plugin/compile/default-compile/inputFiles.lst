@@ -1,0 +1,13 @@
+C:\Users\USER\developer\BlogCode\Mentorship\learning-path\04-auth-jwt\src\main\java\com\learn\auth\AuthJwtApp.java
+C:\Users\USER\developer\BlogCode\Mentorship\learning-path\04-auth-jwt\src\main\java\com\learn\auth\config\SecurityConfig.java
+C:\Users\USER\developer\BlogCode\Mentorship\learning-path\04-auth-jwt\src\main\java\com\learn\auth\controller\AuthController.java
+C:\Users\USER\developer\BlogCode\Mentorship\learning-path\04-auth-jwt\src\main\java\com\learn\auth\dto\AuthResponse.java
+C:\Users\USER\developer\BlogCode\Mentorship\learning-path\04-auth-jwt\src\main\java\com\learn\auth\dto\LoginRequest.java
+C:\Users\USER\developer\BlogCode\Mentorship\learning-path\04-auth-jwt\src\main\java\com\learn\auth\dto\RegisterRequest.java
+C:\Users\USER\developer\BlogCode\Mentorship\learning-path\04-auth-jwt\src\main\java\com\learn\auth\entity\User.java
+C:\Users\USER\developer\BlogCode\Mentorship\learning-path\04-auth-jwt\src\main\java\com\learn\auth\exception\EmailAlreadyExistsException.java
+C:\Users\USER\developer\BlogCode\Mentorship\learning-path\04-auth-jwt\src\main\java\com\learn\auth\exception\GlobalExceptionHandler.java
+C:\Users\USER\developer\BlogCode\Mentorship\learning-path\04-auth-jwt\src\main\java\com\learn\auth\exception\InvalidCredentialsException.java
+C:\Users\USER\developer\BlogCode\Mentorship\learning-path\04-auth-jwt\src\main\java\com\learn\auth\repository\UserRepository.java
+C:\Users\USER\developer\BlogCode\Mentorship\learning-path\04-auth-jwt\src\main\java\com\learn\auth\service\AuthService.java
+C:\Users\USER\developer\BlogCode\Mentorship\learning-path\04-auth-jwt\src\main\java\com\learn\auth\service\JwtService.java

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Maven Project Object Model (POM) for the Blog API teaching project.
+
+  This project is project #3 in the beginner Spring Boot curriculum. It teaches:
+    - Layered Spring Boot architecture (controller -> service -> repository -> database)
+    - Spring Data JPA with bidirectional One-To-Many / Many-To-One relationships
+    - Bean Validation (jakarta.validation) on request DTOs
+    - Pageable / sortable REST collection endpoints
+    - Centralised exception handling with @RestControllerAdvice
+    - PostgreSQL as a production-like relational database, run locally via Docker Compose
+
+  Spring Boot 4.1.0 modularised the classic "spring-boot-starter-web" starter into
+  protocol specific starters. Because this project only needs a synchronous Servlet-based
+  MVC stack (not WebFlux), it depends on "spring-boot-starter-webmvc" instead of the older,
+  now-superseded "spring-boot-starter-web".
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>4.1.0</version>
+        <relativePath/> <!-- lookup parent from Maven Central, not a local reactor -->
+    </parent>
+
+    <groupId>com.blogcode</groupId>
+    <artifactId>blog-api</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>blog-api</name>
+    <description>Beginner curriculum project 3: a Blog API built with Spring Boot 4, Spring Data JPA and PostgreSQL</description>
+
+    <properties>
+        <!-- Spring Boot 4 requires a modern JDK. Java 25 is the current LTS release used across this curriculum. -->
+        <java.version>25</java.version>
+    </properties>
+
+    <dependencies>
+        <!-- Servlet-based Spring MVC stack (replaces the legacy spring-boot-starter-web in Spring Boot 4). -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webmvc</artifactId>
+        </dependency>
+
+        <!-- Spring Data JPA: repositories, entity manager, Hibernate ORM integration. -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+        <!-- jakarta.validation (Bean Validation) support for @Valid request DTOs. -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
+        <!-- PostgreSQL JDBC driver, only needed at runtime, never compiled against directly. -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- Lombok reduces boilerplate (getters/setters/constructors) on entities and DTOs. -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- Test-only dependencies. -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <!-- MockMvc / WebMvcTest support for the Servlet MVC stack used in this project. -->
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webmvc-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <!-- In-memory database used only for fast repository/service tests, never in production. -->
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <!--
+                  Modern javac versions (as used by Java 25) no longer implicitly scan the
+                  compile classpath for annotation processors and require them to be
+                  registered explicitly via -processorpath. Declaring Lombok as an
+                  annotation processor path here (rather than relying on the deprecated
+                  classpath-scanning behaviour) is the officially recommended way to wire
+                  Lombok into modern Maven + JDK combinations.
+                -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

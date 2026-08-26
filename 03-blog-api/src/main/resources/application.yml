@@ -1,0 +1,42 @@
+# =============================================================================
+# Blog API configuration.
+#
+# Every property here is grouped and commented so a beginner can read this file
+# top-to-bottom and understand exactly what each setting controls.
+# =============================================================================
+
+spring:
+  application:
+    name: blog-api
+
+  # --- Database connection -----------------------------------------------
+  # These credentials match the PostgreSQL container defined in docker-compose.yml.
+  # Run `docker compose up -d` before starting the application.
+  datasource:
+    url: jdbc:postgresql://localhost:5432/blogdb
+    username: bloguser
+    password: blogpass
+    driver-class-name: org.postgresql.Driver
+
+  # --- JPA / Hibernate -----------------------------------------------------
+  jpa:
+    hibernate:
+      # "update" lets Hibernate auto-create/alter tables from the entity model, which is
+      # convenient for a teaching project. Production systems should use a migration tool
+      # such as Flyway or Liquibase and set this to "validate" or "none" instead.
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    open-in-view: false # forces all lazy loading to happen inside the service layer's
+                         # @Transactional methods, which is the pattern this project teaches.
+
+server:
+  port: 8080
+
+# --- Logging ---------------------------------------------------------------
+logging:
+  level:
+    com.blogcode.blogapi: DEBUG
+    org.hibernate.SQL: DEBUG

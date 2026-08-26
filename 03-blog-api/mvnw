@@ -1,0 +1,19 @@
+#!/bin/sh
+# -----------------------------------------------------------------------------
+# Simple Maven launcher script.
+#
+# This project does not ship the full Maven Wrapper binary/jar. Instead, this
+# lightweight script simply delegates every argument straight through to a
+# `mvn` installation that must already be available on your PATH. It exists so
+# the README's "./mvnw ..." instructions work the same way on any machine that
+# has Maven installed, without committing a wrapper jar to source control.
+# -----------------------------------------------------------------------------
+set -e
+
+if ! command -v mvn >/dev/null 2>&1; then
+  echo "Error: Maven (mvn) was not found on your PATH." >&2
+  echo "Install Apache Maven 3.9+ and re-run this script." >&2
+  exit 1
+fi
+
+exec mvn "$@"

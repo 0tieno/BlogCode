@@ -1,0 +1,17 @@
+#!/bin/sh
+# ----------------------------------------------------------------------------
+# Simple Maven Wrapper launcher for Unix-like shells (Git Bash, WSL, macOS,
+# Linux). This multi-module project does not vendor the full Maven Wrapper
+# binary jar; it simply forwards every argument to a Maven installation
+# already on the PATH, so "./mvnw -pl student-service spring-boot:run"
+# behaves the same way a real wrapper would.
+# ----------------------------------------------------------------------------
+set -e
+
+if ! command -v mvn >/dev/null 2>&1; then
+  echo "[ERROR] Apache Maven (mvn) was not found on the PATH." >&2
+  echo "        Install Maven from https://maven.apache.org/download.cgi" >&2
+  exit 1
+fi
+
+exec mvn "$@"

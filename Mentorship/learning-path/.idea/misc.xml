@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/06-testing/pom.xml" />
+        <option value="$PROJECT_DIR$/04-auth-jwt/pom.xml" />
+        <option value="$PROJECT_DIR$/03-database-todo/pom.xml" />
+        <option value="$PROJECT_DIR$/02-in-memory-todo/pom.xml" />
+        <option value="$PROJECT_DIR$/01-hello-world-api/pom.xml" />
+        <option value="$PROJECT_DIR$/05-secured-todo-api/pom.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_25" default="true" project-jdk-name="25" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+</project>

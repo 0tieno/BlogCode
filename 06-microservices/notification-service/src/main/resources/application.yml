@@ -1,0 +1,29 @@
+# ---------------------------------------------------------------------------
+# Configuration for the notification-service module.
+#
+# Notice there is no spring.datasource block here at all - this service is
+# deliberately database-free, storing everything in memory.
+# ---------------------------------------------------------------------------
+server:
+  port: 8083
+
+spring:
+  application:
+    name: notification-service
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+logging:
+  level:
+    com.blogcode.microservices.notification: DEBUG

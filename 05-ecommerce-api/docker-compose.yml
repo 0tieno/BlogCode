@@ -1,0 +1,47 @@
+
+# ---------------------------------------------------------------------------
+# docker-compose.yml for the 05-ecommerce-api curriculum module.
+#
+# Spins up the two infrastructure dependencies the application needs locally:
+#   1. postgres  - the relational database backing Spring Data JPA.
+#   2. redis     - the cache store backing @Cacheable/@CacheEvict.
+#
+# Run "docker compose up -d" from this directory before starting the Spring
+# Boot application with "./mvnw spring-boot:run".
+# ---------------------------------------------------------------------------
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: ecommerce-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ecommerce_db
+      POSTGRES_USER: ecommerce
+      POSTGRES_PASSWORD: ecommerce
+    ports:
+      - "5432:5432"
+    volumes:
+      - ecommerce-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ecommerce -d ecommerce_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: ecommerce-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - ecommerce-redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  ecommerce-postgres-data:
+  ecommerce-redis-data:

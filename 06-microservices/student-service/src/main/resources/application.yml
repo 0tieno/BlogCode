@@ -1,0 +1,63 @@
+# ---------------------------------------------------------------------------
+# Configuration for the student-service module.
+#
+# feign.circuitbreaker.enabled=true is the key line that activates the
+# "fallback" attribute declared on @FeignClient(name = "course-service",
+# fallback = CourseClientFallback.class) - without it, Feign would simply
+# propagate exceptions from failed calls instead of using the fallback.
+# ---------------------------------------------------------------------------
+server:
+  port: 8081
+
+spring:
+  application:
+    name: student-service
+  datasource:
+    url: jdbc:postgresql://localhost:5433/student_db
+    username: student
+    password: student
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    open-in-view: false
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 3000
+        readTimeout: 3000
+  circuitbreaker:
+    enabled: true
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      course-service:
+        register-health-indicator: true
+        sliding-window-size: 5
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 5s
+        permitted-number-of-calls-in-half-open-state: 2
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,circuitbreakers
+  health:
+    circuitbreakers:
+      enabled: true
+
+logging:
+  level:
+    com.blogcode.microservices.student: DEBUG

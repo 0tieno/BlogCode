@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Maven Project Object Model (POM) for the "05-ecommerce-api" curriculum module.
+
+  Teaching goal: this file shows a beginner how a *standalone* Spring Boot
+  application declares its build, its parent BOM (Bill of Materials) and the
+  starters it needs. Every dependency below maps directly to a feature that is
+  demonstrated in the source code (JPA relationships, Redis caching, async
+  email simulation, Actuator, file uploads, validation, etc.).
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!--
+      Spring Boot's "starter parent" supplies dependency and plugin version
+      management so that individual starters below do not need explicit
+      <version> tags. Pinning it to 4.1.0 satisfies the curriculum requirement
+      to teach the current Spring Boot generation, which runs on Java 25.
+    -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>4.1.0</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>com.blogcode</groupId>
+    <artifactId>ecommerce-api</artifactId>
+    <version>1.0.0</version>
+    <name>05-ecommerce-api</name>
+    <description>
+        Curriculum module 5: a standalone e-commerce REST API teaching advanced
+        JPA relationships, Redis caching, async processing, file uploads,
+        pagination/filtering and production endpoints (Actuator).
+    </description>
+    <packaging>jar</packaging>
+
+    <properties>
+        <!-- Java 25 is the language level required for this curriculum. -->
+        <java.version>25</java.version>
+        <maven.compiler.release>25</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <!--
+          spring-boot-starter-webmvc replaces the classic "spring-boot-starter-web"
+          name in Spring Boot 4.x. It brings in the embedded Tomcat server and
+          Spring MVC so we can build synchronous, servlet-based REST controllers.
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webmvc</artifactId>
+        </dependency>
+
+        <!-- Spring Data JPA: repositories, entity mapping, the persistence context. -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+        <!-- PostgreSQL JDBC driver used by the docker-compose database. -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- Redis-backed Spring Cache abstraction: powers @Cacheable/@CacheEvict. -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>
+
+        <!-- Bean Validation (jakarta.validation) for DTO input constraints. -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
+        <!-- Actuator exposes /actuator/health, /actuator/metrics, /actuator/caches, etc. -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <!-- Lombok removes boilerplate (getters/setters/constructors) via annotation processing. -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- Test scope: JUnit 5, Mockito, AssertJ, etc. -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!--
+          spring-boot-starter-webmvc-test provides MockMvc auto-configuration for
+          slice tests (@WebMvcTest) that boot only the web layer of the app.
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webmvc-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- In-memory H2 database used only for fast, isolated unit/slice tests. -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>ecommerce-api</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <!-- Excludes Lombok from the final fat jar; it is compile-time only. -->
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

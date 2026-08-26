@@ -1,0 +1,73 @@
+# ---------------------------------------------------------------------------
+# Main application configuration for the 05-ecommerce-api curriculum module.
+#
+# Every property here corresponds to a concept taught in this project:
+#   - spring.datasource.*   -> PostgreSQL connection (see docker-compose.yml)
+#   - spring.jpa.*          -> Hibernate schema generation & SQL logging
+#   - spring.data.redis.*   -> Redis connection used by the cache abstraction
+#   - spring.cache.*        -> enables the Redis-backed CacheManager
+#   - management.*          -> Spring Boot Actuator endpoint exposure
+#   - app.upload.*          -> where uploaded product images are stored/served
+# ---------------------------------------------------------------------------
+server:
+  port: 8080
+
+spring:
+  application:
+    name: ecommerce-api
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ecommerce_db
+    username: ecommerce
+    password: ecommerce
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      # "update" is convenient for a teaching project: Hibernate evolves the
+      # schema to match the entities automatically. Production systems would
+      # use a migration tool (Flyway/Liquibase) instead.
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    open-in-view: false
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+  cache:
+    type: redis
+    redis:
+      time-to-live: 60000
+
+  servlet:
+    multipart:
+      # Limits for the image upload endpoint - keeps the demo predictable.
+      max-file-size: 5MB
+      max-request-size: 5MB
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,caches
+  endpoint:
+    health:
+      show-details: always
+
+app:
+  upload:
+    # Directory (relative to the working directory the app is started from)
+    # where uploaded images are physically stored. Kept inside the project
+    # rather than a system temp folder so students can inspect the files.
+    dir: uploads/images
+    # Public URL prefix the images are served under (see WebConfig).
+    url-prefix: /images
+
+logging:
+  level:
+    com.blogcode.ecommerce: DEBUG

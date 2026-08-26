@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Maven POM for the "api-gateway" module: the single public entry point for
+  external clients, routing HTTP requests to student-service and
+  course-service by their logical Eureka service names instead of exposing
+  every backend service's host:port directly.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.blogcode</groupId>
+        <artifactId>microservices-parent</artifactId>
+        <version>1.0.0</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>api-gateway</artifactId>
+    <packaging>jar</packaging>
+    <name>api-gateway</name>
+    <description>Servlet-based (Web MVC) API gateway routing to student-service and course-service.</description>
+
+    <dependencies>
+        <!--
+          spring-boot-starter-webmvc: since this whole curriculum standardizes
+          on the servlet (Spring MVC) stack rather than reactive WebFlux, we
+          use the Web MVC flavor of Spring Cloud Gateway below instead of the
+          classic reactive "spring-cloud-starter-gateway".
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webmvc</artifactId>
+        </dependency>
+
+        <!--
+          The Web MVC (servlet-based) flavor of Spring Cloud Gateway. It lets
+          this module declare routing rules (see application.yml) that
+          forward incoming requests to other services, entirely on top of
+          the same servlet stack the rest of this curriculum uses.
+        -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-gateway-server-webmvc</artifactId>
+        </dependency>
+
+        <!--
+          Eureka client: registers this gateway with service-registry and
+          lets it resolve logical names like "lb://student-service" into a
+          real, currently-healthy instance address.
+        -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+
+        <!--
+          Spring Cloud LoadBalancer resolves the "lb://" URI scheme used in
+          the gateway's route definitions into an actual instance address
+          chosen from the set Eureka currently reports as healthy.
+        -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>api-gateway</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>

@@ -1,0 +1,4 @@
+# This file exists solely so Git tracks the (otherwise empty) uploads/images
+# directory. Uploaded product images are written here at runtime by
+# FileStorageServiceImpl and are intentionally excluded from version control
+# by .gitignore, while this directory placeholder itself is kept.

@@ -1,0 +1,50 @@
+
+# ---------------------------------------------------------------------------
+# docker-compose.yml for the 06-microservices curriculum module.
+#
+# Spins up two independent PostgreSQL instances - one per database-backed
+# service - so student-service and course-service each own their data,
+# a core microservices principle ("database per service"). Run
+# "docker compose up -d" from this directory before starting any of the
+# Spring Boot modules.
+# ---------------------------------------------------------------------------
+services:
+  postgres-student:
+    image: postgres:16-alpine
+    container_name: student-service-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: student_db
+      POSTGRES_USER: student
+      POSTGRES_PASSWORD: student
+    ports:
+      - "5433:5432"
+    volumes:
+      - student-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U student -d student_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  postgres-course:
+    image: postgres:16-alpine
+    container_name: course-service-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: course_db
+      POSTGRES_USER: course
+      POSTGRES_PASSWORD: course
+    ports:
+      - "5434:5432"
+    volumes:
+      - course-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U course -d course_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  student-postgres-data:
+  course-postgres-data:

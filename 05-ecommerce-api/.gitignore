@@ -1,0 +1,10 @@
+target/
+*.class
+*.log
+.idea/
+*.iml
+
+# Uploaded product images are runtime artifacts, not source code.
+# The directory itself is kept via uploads/images/.gitkeep.
+uploads/images/*
+!uploads/images/.gitkeep

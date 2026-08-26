@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Parent (aggregator) POM for the "06-microservices" curriculum module.
+
+  Teaching goal: this file shows a beginner how a *multi-module* Maven
+  project is organized. A single parent POM centralizes shared version
+  numbers (Spring Boot, Spring Cloud, Java) so that every child module
+  ("service-registry", "api-gateway", "student-service", "course-service",
+  "notification-service") only has to declare *which* starters it needs,
+  never *which version* of them - that is inherited from here.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!--
+      Every child module ultimately inherits from spring-boot-starter-parent
+      through this POM, which supplies Spring Boot's own dependency and
+      plugin version management (e.g. the spring-boot-maven-plugin version).
+    -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>4.1.0</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>com.blogcode</groupId>
+    <artifactId>microservices-parent</artifactId>
+    <version>1.0.0</version>
+    <!-- "pom" packaging marks this as an aggregator: it builds no jar of
+         its own, only coordinates the modules listed below. -->
+    <packaging>pom</packaging>
+
+    <name>06-microservices</name>
+    <description>
+        Curriculum module 6: a multi-module microservices system teaching
+        service discovery (Eureka), API gateway routing, inter-service
+        communication (OpenFeign), and basic resilience patterns.
+    </description>
+
+    <modules>
+        <module>service-registry</module>
+        <module>api-gateway</module>
+        <module>student-service</module>
+        <module>course-service</module>
+        <module>notification-service</module>
+    </modules>
+
+    <properties>
+        <!-- Java 25 is the language level required for this curriculum. -->
+        <java.version>25</java.version>
+        <maven.compiler.release>25</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!--
+          Spring Cloud 2025.1.2 is the release train compatible with Spring
+          Boot 4.1.x. Every spring-cloud-starter-* dependency used by child
+          modules gets its version from this single property via the BOM
+          imported below - a classic "train release" versioning pattern.
+        -->
+        <spring-cloud.version>2025.1.2</spring-cloud.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!--
+              Importing the Spring Cloud BOM (Bill of Materials) here means
+              every child module can declare spring-cloud-starter-* artifacts
+              (Eureka server/client, Gateway, OpenFeign, Resilience4j) without
+              ever specifying a <version> - it is resolved from this train.
+            -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <!-- Lombok is used by every service module to remove boilerplate. -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- Shared test dependencies available to every child module. -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <configuration>
+                        <excludes>
+                            <exclude>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok</artifactId>
+                            </exclude>
+                        </excludes>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+</project>

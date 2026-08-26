@@ -1,0 +1,46 @@
+# ---------------------------------------------------------------------------
+# Configuration for the api-gateway module.
+#
+# spring.cloud.gateway.server.webmvc.routes declares path-based routing
+# rules: any request whose path matches a route's "Path=" predicate is
+# forwarded to that route's "uri". The "lb://" scheme means "resolve this
+# logical service name through Eureka + Spring Cloud LoadBalancer" rather
+# than a fixed host:port - the whole point of service discovery.
+# ---------------------------------------------------------------------------
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      server:
+        webmvc:
+          routes:
+            - id: student-service-route
+              uri: lb://student-service
+              predicates:
+                - Path=/api/students/**
+
+            - id: course-service-route
+              uri: lb://course-service
+              predicates:
+                - Path=/api/courses/**
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,gateway
+
+logging:
+  level:
+    com.blogcode.microservices.gateway: DEBUG

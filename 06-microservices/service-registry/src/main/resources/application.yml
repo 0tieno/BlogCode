@@ -1,0 +1,34 @@
+# ---------------------------------------------------------------------------
+# Configuration for the Eureka service-registry server.
+#
+# eureka.client.register-with-eureka / fetch-registry are both set to false
+# because the registry itself has no need to register with, or query, itself
+# - it *is* the registry. Every other service in this module sets both of
+# these to true (the default) so they register here and discover peers.
+# ---------------------------------------------------------------------------
+server:
+  port: 8761
+
+spring:
+  application:
+    name: service-registry
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+  server:
+    # Speeds up eviction of stale instances for a snappier teaching demo;
+    # a production registry would use longer, more conservative intervals.
+    eviction-interval-timer-in-ms: 5000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+logging:
+  level:
+    com.netflix.eureka: WARN
+    com.netflix.discovery: WARN
