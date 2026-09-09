@@ -1,6 +1,6 @@
 package com.learn.blogapi.service.impl;
 
-import com.learn.blogapi.dto.PostMapper;
+import com.learn.blogapi.mapper.PostMapper;
 import com.learn.blogapi.dto.PostRequest;
 import com.learn.blogapi.dto.PostResponse;
 import com.learn.blogapi.entity.Post;

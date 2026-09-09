@@ -1,5 +1,7 @@
-package com.learn.blogapi.dto;
+package com.learn.blogapi.mapper;
 
+import com.learn.blogapi.dto.PostRequest;
+import com.learn.blogapi.dto.PostResponse;
 import com.learn.blogapi.entity.Post;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +19,7 @@ public class PostMapper {
 
     }
 
-    public  PostResponse toResponse(Post post) {
+    public PostResponse toResponse(Post post) {
         return new PostResponse(
                 post.getId(),
                 post.getTitle(),
